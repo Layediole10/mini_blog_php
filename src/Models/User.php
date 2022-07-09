@@ -2,7 +2,8 @@
 
 namespace Hello\BlogPhp\Models;
 
-class User
+
+class User extends Model
 {
     private int $_id;
     private string $_fname;
@@ -10,26 +11,30 @@ class User
     private string $_pseudo;
     private string $_email;
     private string $_password;
-    private string $_birthday;    
+    private string $_dateOfBirth;    
     private string $_role;
     private bool $_activate;
+    
 
 
-    public function __construct(string $email, string $password, string $fname = "", string $lname = "", string $pseudo = "",   string $birthday = "")
+    public function __construct(string $email, string $password, string $fname = "", string $lname = "", string $pseudo = "",   string $dateOfBirth = "")
     {
+        $this->dbConnect();
+        $this->table = "user";
+
+        $this->_email = $email;
+        $this->_password = password_hash($password,PASSWORD_DEFAULT);
         $this->_fname = $fname;
         $this->_lname = $lname;
-        $this->_email = $email;
         $this->_pseudo = $pseudo;
-        $this->password = password_hash($password,PASSWORD_DEFAULT);
-        $this->_birthday = $birthday;
+        $this->_dateOfBirth = $dateOfBirth;
         $this->_role = "user";
         $this->_activate = true;        
     }
 
     public function ageCalculator(){
 
-        $birth = date_create($this->_birthday);
+        $birth = date_create($this->_dateOfBirth);
         $today = date_create(date("d/m/y", time()));
         $myAge = date_diff($today, $birth)->format("%y");
 
@@ -44,6 +49,26 @@ class User
 
     }
 
+
+    public function insertData(){
+       
+       $requete = "INSERT INTO `$this->table` (first_name, last_name, pseudo, email, password, date_of_birth, role, activate) VALUES ( :first_name,:last_name, :pseudo, :email, :password, :date_of_birth, :role, :activate)";
+    //    requete preparée
+        $prep = $this->pdo->prepare($requete);
+
+        $prep->bindParam(":first_name", $this->_fname);
+        $prep->bindParam(":last_name", $this->_lname);
+        $prep->bindParam(":pseudo", $this->_pseudo);
+        $prep->bindParam(":email", $this->_email);
+        $prep->bindParam(":password", $this->_password);
+        $prep->bindParam(":date_of_birth", $this->_dateOfBirth);
+        $prep->bindParam(":role", $this->_role);
+        $prep->bindParam(":activate", $this->_activate);
+        $prep->execute();
+        
+      }
+      
+
     public function __toString()
     {
         return "{
@@ -53,7 +78,7 @@ class User
                 Email : $this->_email
                 Pseudo : $this->_pseudo
                 Password : $this->_password
-                Date of birth : $this->_birthday
+                Date of birth : $this->_dateOfBirth
                 Role : $this->_role
 
             }
@@ -82,16 +107,32 @@ class User
         return $this->_password;
     }
 
-    public function getBirthday(){
-        return $this->_birthday;
+    public function getDateOfBirth(){
+        return $this->_dateOfBirth;
+    }
+
+    public function getRole(){
+        return $this->_role;
+    }
+
+    public function isActivate(){
+        return $this->_activate;
     }
 
     // setters
     public function setFname(string $fname){
-        $this->_fname = strtoupper($fname);
+        $this->_fname = ucfirst($fname);
     }
 
     public function setLname(string $lname){
-        $this->_fname = ucfirst($lname);
+        $this->_fname = strtoupper($lname);
+    }
+
+    public function setRole(string $_role){
+        $this->_role = $_role;
+    }
+
+    public function setActivate(bool $_activate){
+        $this->_activate = $_activate;
     }
 }

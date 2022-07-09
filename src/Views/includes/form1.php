@@ -1,6 +1,6 @@
 
     <div class="container w-25">
-        <form action=""  method="post">
+        <form action="/blog_php/Sign/insert"  method="post">
             <div class="mb-3">
                 <label for="fname" class="form-label">First name</label>
                 <input type="text" class="form-control" name="fname">
@@ -27,10 +27,12 @@
 
             </div>                         
             <div class="mb-3">
-                <label for="birthday" class="form-label">Date of birth</label>
-                <input type="date" class="form-control">
+                <label for="dateOfBirth" class="form-label">Date of birth</label>
+                <input type="date" class="form-control" name="dateOfBirth">
             </div>
 
-            <input type="submit" value="submit" name="submit">
+            <div class="col-12">
+                <button class="btn btn-primary" type="submit" name="submit">register</button>
+            </div>
         </form>
     </div>

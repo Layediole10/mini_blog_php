@@ -4,6 +4,7 @@ namespace Hello\BlogPhp\Models;
 
 class Connexion
 {
+   
     public static function dbConnect(){
         try {
            // echo "connected...";
