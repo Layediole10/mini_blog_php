@@ -1,6 +1,6 @@
 
     <div class="container w-25">
-        <form action="/blog_php/Sign/insert"  method="post">
+        <form action="/blog_php/Authenticate/insert"  method="post">
             <div class="mb-3">
                 <label for="fname" class="form-label">First name</label>
                 <input type="text" class="form-control" name="fname">

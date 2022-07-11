@@ -32,6 +32,7 @@ class User extends Model
         $this->_activate = true;        
     }
 
+    // calculer l'age de l'utilisateur
     public function ageCalculator(){
 
         $birth = date_create($this->_dateOfBirth);
@@ -49,16 +50,16 @@ class User extends Model
 
     }
 
-
+    // inserrer des données dans la base de données
     public function insertData(){
        
        $requete = "INSERT INTO `$this->table` (first_name, last_name, pseudo, email, password, date_of_birth, role, activate) VALUES ( :first_name,:last_name, :pseudo, :email, :password, :date_of_birth, :role, :activate)";
     //    requete preparée
         $prep = $this->pdo->prepare($requete);
-
+        $prep->bindParam(":pseudo", $this->_pseudo);
         $prep->bindParam(":first_name", $this->_fname);
         $prep->bindParam(":last_name", $this->_lname);
-        $prep->bindParam(":pseudo", $this->_pseudo);
+        
         $prep->bindParam(":email", $this->_email);
         $prep->bindParam(":password", $this->_password);
         $prep->bindParam(":date_of_birth", $this->_dateOfBirth);
@@ -67,8 +68,20 @@ class User extends Model
         $prep->execute();
         
       }
-      
 
+    //   selection d'un utiliseur a partir de son email
+    public function getOneByEmail(){
+        
+        $requete = "SELECT * FROM $this->table WHERE email = :email";
+        $prep = $this->pdo->prepare($requete);
+        $prep->bindParam(":email", $this->_email);
+        $prep->execute();
+        $prep->fetchAll(\PDO::FETCH_ASSOC);
+
+    }
+
+ 
+    //   transformer un objet en chaine de caracteres
     public function __toString()
     {
         return "{
