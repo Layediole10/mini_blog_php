@@ -12,13 +12,15 @@ class Authenticate
 
     public function login(){
         
-        if (isset($_POST['submit'])) {
+        if (isset($_POST['login'])) {
 
-            $authUser = new User($_POST['email'], $_POST['password']);
+            $email = htmlspecialchars($_POST['email']);
+            $pw = htmlspecialchars($_POST['password']);
+            $authUser = new User($email, $pw);
             $user = $authUser->getOneByEmail();
 
             if ($user) {
-                if (password_verify($_POST['password'], $user['password'])) {
+                if (password_hash($pw,PASSWORD_DEFAULT) === $user['password']) {
                     if ($user['role'] === 'admin') {
                         header("location:/blog_php/AdminControl");
                     }elseif ($user['role'] === 'user') {
@@ -30,9 +32,9 @@ class Authenticate
                     echo "mot de passe incorrect!";
                 }
 
+            }else{
+                echo "email incorrect!";
             }
-        }else{
-            echo "email incorrect!";
         }
     }
 

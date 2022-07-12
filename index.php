@@ -1,26 +1,28 @@
 <?php
 
    require_once "./vendor/autoload.php";
-// On sépare l'url sous form de sous chaine dans un tableau
-$params = explode("/",$_GET['p']);
+// recuperation de l'url sous forme de tableau séparé par des slashs.
+$url = explode("/",$_GET['paramUrl']);
 
-if ($params[0]!="") {
-    $controller = ucfirst($params[0]);
+if ($url[0]!="") {
+    $controller = ucfirst($url[0]);
     
-    //Création dynamique de classes du controlleur
+    //instanciation dynamique de la classe du controlleur
     $class =  'Hello\BlogPhp\Controllers\\'.$controller;
     $controller = new $class();
     
-    /*  Si le 2ème parametre du tableau (url) est défini, on l'appel au niveau du controller, sinon on applique la methode index du controlleur */
-    $action = isset($params[1])? $params[1]: "index";
+    //recuperation du 2e parametre s'il existe sinon on prend index.
+    $action = isset($url[1])? $url[1]: "index";
 
-    //action via la methode 
+    //appel de la methode s'il existe 
     if (method_exists($controller,$action)) {
         $controller->$action();
+
     }else{
         echo "Page Not found 404";
     }
 }else{
+    //si aucun parametre n'est defini, on appelle la page home
     $home = new  Hello\BlogPhp\Controllers\Home();
     $home->index();
 }
