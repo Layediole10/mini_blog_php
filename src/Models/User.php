@@ -24,13 +24,15 @@ class User extends Model
 
         $this->_email = $email;
         $this->_password = password_hash($password,PASSWORD_DEFAULT);
-        $this->_fname = $fname;
-        $this->_lname = $lname;
+        $this->_fname = ucfirst($fname);
+        $this->_lname = strtoupper($lname);
         $this->_pseudo = $pseudo;
         $this->_dateOfBirth = $dateOfBirth;
         $this->_role = "user";
         $this->_activate = true;        
     }
+
+
 
     // calculer l'age de l'utilisateur
     public function ageCalculator(){
@@ -40,11 +42,8 @@ class User extends Model
         $myAge = date_diff($today, $birth)->format("%y");
 
         if ($myAge > 1) {
-
             return $this->_fname." ".$this->_lname.",vous avez ". $myAge." ans";
-
         }else{
-
             return $this->_fname." ".$this->_lname.",vous avez ". $myAge." an";
         }
 
@@ -59,6 +58,7 @@ class User extends Model
         $prep->bindParam(":first_name", $this->_fname);
         $prep->bindParam(":last_name", $this->_lname); 
         $prep->bindParam(":email", $this->_email);
+        $prep->bindParam(":pseudo", $this->_pseudo);
         $prep->bindParam(":password", $this->_password);
         $prep->bindParam(":date_of_birth", $this->_dateOfBirth);
         $prep->bindParam(":role", $this->_role);
@@ -78,7 +78,7 @@ class User extends Model
 
     }
 
- 
+
     //   transformer un objet en chaine de caracteres
     public function __toString()
     {

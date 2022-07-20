@@ -15,7 +15,7 @@
             </li> 
 
             <li class="nav-item">
-              <a class="nav-link" href="/blog_php/Log">Log out</a>
+              <a class="nav-link" href="/blog_php/Authenticate/index">Log out</a>
             </li>
           </ul>
         </div>

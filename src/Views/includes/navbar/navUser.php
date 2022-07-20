@@ -7,15 +7,13 @@
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="/blog_php/home">Home</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/blog_php/adminControl">Admin</a>
-            </li>
+            
             <li class="nav-item">
               <a class="nav-link" href="/blog_php/UserController">User</a>
             </li> 
 
             <li class="nav-item">
-              <a class="nav-link" href="/blog_php/Log">Log out</a>
+              <a class="nav-link" href="/blog_php/Authenticate/index">Log out</a>
             </li>
           </ul>
         </div>
